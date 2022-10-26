@@ -6,14 +6,26 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@mui/material/styles";
 import { createTheme } from "@mui/material";
+import { useSelector } from "react-redux";
+import { RootState } from "slices/store";
+import Loader from "components/Loader";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Urbanist"].join(","),
+    fontFamily: ["Roboto", "Urbanist"].join(","),
+  },
+  palette: {
+    background: {
+      default: "#e4f0e2",
+    },
   },
 });
 
 function App() {
+  const loading = useSelector<RootState, boolean>(
+    (state) => state.viewState.loading
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
@@ -31,6 +43,7 @@ function App() {
           pauseOnHover
           theme="colored"
         />
+        {loading && <Loader />}
       </div>
     </ThemeProvider>
   );

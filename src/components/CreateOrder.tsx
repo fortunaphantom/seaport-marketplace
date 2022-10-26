@@ -8,16 +8,15 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { Order } from "@opensea/seaport-js/lib/types";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 interface ICreateOrderProps {
-  onCreateOrder?: (data: any) => void
+  onCreateOrder?: (data: any) => void;
 }
 
 const CreateOrder = (props: ICreateOrderProps) => {
-  const {onCreateOrder} = props;
+  const { onCreateOrder } = props;
   const [orderData, setOrderData] = useState<any>({});
 
   const onSubmit = () => {
@@ -55,7 +54,7 @@ const CreateOrder = (props: ICreateOrderProps) => {
       tokenId,
       tokenType: orderData.token_type,
       tokenAmount,
-      price
+      price,
     };
 
     onCreateOrder && onCreateOrder(data);
@@ -108,9 +107,7 @@ const CreateOrder = (props: ICreateOrderProps) => {
         variant="outlined"
         fullWidth
         value={orderData.price || ""}
-        onChange={(e) =>
-          setOrderData({ ...orderData, price: e.target.value })
-        }
+        onChange={(e) => setOrderData({ ...orderData, price: e.target.value })}
       />
       <Button variant="contained" onClick={onSubmit}>
         List for sale

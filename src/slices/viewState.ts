@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ViewState {
-  loading: boolean;
-}
-
-const initialState: ViewState = {
+const initialState = {
   loading: false,
 };
 
@@ -12,9 +8,9 @@ export const viewState = createSlice({
   name: "viewState",
   initialState,
   reducers: {
-    setLoading: (state: ViewState, action: PayloadAction<boolean>) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
-    }
+    },
   },
   extraReducers: (builder: any) => {},
 });

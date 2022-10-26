@@ -1,5 +1,6 @@
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { ethers } from "ethers";
 import config from "utils/config";
 import Web3 from "web3";
@@ -16,14 +17,21 @@ export async function approveToken(
   const account = (await web3.eth.getAccounts())?.[0]?.toLowerCase();
 
   const approved = await contract.methods.getApproved(tokenId).call();
-  const isApprovedForAll = await contract.methods.isApprovedForAll(account, config.SeaportAddress).call();
-  console.log({approved, isApprovedForAll});
-  if (approved.toLowerCase() !== config.SeaportAddress.toLowerCase() && !isApprovedForAll) {
+  const isApprovedForAll = await contract.methods
+    .isApprovedForAll(account, config.SeaportAddress)
+    .call();
+  console.log({ approved, isApprovedForAll });
+  if (
+    approved.toLowerCase() !== config.SeaportAddress.toLowerCase() &&
+    !isApprovedForAll
+  ) {
     try {
       const tx = {
         from: account,
         to: tokenAddress,
-        data: contract.methods.approve(config.SeaportAddress, tokenId).encodeABI(),
+        data: contract.methods
+          .approve(config.SeaportAddress, tokenId)
+          .encodeABI(),
       };
 
       await web3.eth.sendTransaction(tx);
@@ -40,7 +48,8 @@ export async function createOrderFor721(
   priceInEth: string
 ) {
   const seaport = new Seaport(new ethers.providers.Web3Provider(provider));
-  const offerer = window.ethereum.selectedAddress;
+  const web3 = new Web3(provider);
+  const account = (await web3.eth.getAccounts())?.[0]?.toLowerCase();
   const { executeAllActions } = await seaport.createOrder(
     {
       offer: [
@@ -53,13 +62,27 @@ export async function createOrderFor721(
       consideration: [
         {
           amount: ethers.utils.parseEther(priceInEth).toString(),
-          recipient: offerer,
+          recipient: account,
         },
       ],
     },
-    offerer
+    account
   );
 
   const order = await executeAllActions();
   return order;
+}
+
+export async function fulfillOrder(provider: any, order: OrderWithCounter) {
+  const seaport = new Seaport(new ethers.providers.Web3Provider(provider));
+  const web3 = new Web3(provider);
+  const account = (await web3.eth.getAccounts())?.[0]?.toLowerCase();
+  const { executeAllActions: executeAllFulfillActions } =
+    await seaport.fulfillOrder({
+      order,
+      accountAddress: account,
+    });
+
+  const transaction = executeAllFulfillActions();
+  return transaction;
 }

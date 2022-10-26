@@ -14,7 +14,9 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 
 export default function MyAppBar() {
   const dispatch = useDispatch<AppDispatch>();
-  const selectedAddress = useSelector<RootState, string>(state => state.web3.selectedAddress);
+  const selectedAddress = useSelector<RootState, string>(
+    (state) => state.web3.selectedAddress
+  );
 
   useEffect(() => {}, []);
 
@@ -36,10 +38,12 @@ export default function MyAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Seaport Testing
+            Rinzo Seaport Testing
           </Typography>
-          <Button color="inherit" onClick={onConnect}>
-            {selectedAddress ? "Connected to " + selectedAddress : "Connect Wallet"}
+          <Button color="success" variant="contained" onClick={onConnect}>
+            {selectedAddress
+              ? "Connected to " + selectedAddress
+              : "Connect Wallet"}
           </Button>
         </Toolbar>
       </AppBar>
