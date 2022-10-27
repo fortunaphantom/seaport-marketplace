@@ -32,7 +32,7 @@ Local json file was used as a database. (/server/storage/orders.json)
 
 ## Directory structure
 
-server: express server source
+server: express server source\
 src: react frontend source
 
 ## Learn More
