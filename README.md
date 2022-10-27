@@ -14,7 +14,7 @@ You will also see any lint errors in the console.
 
 ### `npm run dev:server`
 
-Runs the local express server in the development mode. ([http://localhost:4000])
+Runs the local express server in the development mode. [http://localhost:4000](http://localhost:4000)
 
 ### `npm run build`
 
@@ -25,6 +25,15 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+## Database file
+
+Local json file was used as a database. (/server/storage/orders.json)
+
+## Directory structure
+
+server: express server source
+src: react frontend source
 
 ## Learn More
 
