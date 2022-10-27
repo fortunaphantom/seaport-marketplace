@@ -4,11 +4,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { Box, Stack } from "@mui/material";
 import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
-import { fulfillOrder } from "libs/orders";
+import { fulfillOrder } from "libs/seaport";
 import { AppDispatch, RootState } from "slices/store";
 import { useSelector, useDispatch } from "react-redux";
 import { apiDeleteOrder } from "utils/api";
 import { setLoading } from "slices/viewState";
+import { getAllOrders } from "slices/orders";
 
 export interface IOrderDetailDialogProps {
   open: boolean;
@@ -31,6 +32,7 @@ function OrderDetailDialog(props: IOrderDetailDialogProps) {
         dispatch(setLoading(true));
         await fulfillOrder(provider, selectedOrder);
         await apiDeleteOrder(selectedOrder.signature);
+        await dispatch(getAllOrders());
         dispatch(setLoading(false));
       } catch (e) {
         dispatch(setLoading(false));

@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CreateOrder from "../components/CreateOrder";
-import { approveToken, createOrderFor721 } from "libs/orders";
+import { approveToken, createOrderFor1155, createOrderFor721 } from "libs/seaport";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "slices/store";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
@@ -36,25 +36,40 @@ const Home = () => {
 
     try {
       dispatch(setLoading(true));
+      
       toast.info("Checking approved ...");
       await approveToken(
         provider,
         data.tokenAddress,
         data.tokenId.toString(),
-        ItemType.ERC721
+        data.tokenType
       );
+
       toast.info("Creating order ...");
-      const order = await createOrderFor721(
-        provider,
-        data.tokenAddress,
-        data.tokenId.toString(),
-        data.price.toString()
-      );
+      let order;
+      if (data.tokenType === ItemType.ERC721) {
+        order = await createOrderFor721(
+          provider,
+          data.tokenAddress,
+          data.tokenId.toString(),
+          data.price
+        );
+      } else {
+        order = await createOrderFor1155(
+          provider,
+          data.tokenAddress,
+          data.tokenId.toString(),
+          data.tokenAmount,
+          data.price
+        );
+      }
       toast.info("Created order");
+
       await apiPostOrder(order);
-      dispatch(getAllOrders());
+      await dispatch(getAllOrders());
       dispatch(setLoading(false));
     } catch (e) {
+      console.error(e);
       dispatch(setLoading(false));
     }
   };
