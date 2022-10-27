@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import OrderList from "../components/OrderList";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { Button, Stack } from "@mui/material";
@@ -26,7 +26,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(connectWallet());
     dispatch(getAllOrders());
-  }, []);
+  }, []); // eslint-disable-line
 
   const onCreateOrder = async (data: any) => {
     if (!provider) {

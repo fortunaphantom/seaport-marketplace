@@ -1,6 +1,6 @@
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { ethers } from "ethers";
 import config from "utils/config";
 import Web3 from "web3";
