@@ -1,4 +1,4 @@
-import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import axios from "axios";
 
 const api = axios.create({

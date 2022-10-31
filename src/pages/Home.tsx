@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import OrderList from "../components/OrderList";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { Button, Stack } from "@mui/material";
-import Container from "@mui/material/Container";
 import { Box, Grid } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import CreateOrder from "../components/CreateOrder";
-import { approveToken, createOrderFor721 } from "libs/orders";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "slices/store";
-import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { toast } from "react-toastify";
-import { apiPostOrder } from "utils/api";
 import { connectWallet } from "slices/web3Slice";
 import { getAllOrders } from "slices/orders";
 import { setLoading } from "slices/viewState";
@@ -21,7 +15,6 @@ import CreateOrderDialog from "components/CreateOrderDialog";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const provider = useSelector<RootState, any>((state) => state.web3.provider);
   const orderList = useSelector<RootState, OrderWithCounter[]>(
     (state) => state.orders.orders
   );
@@ -34,9 +27,6 @@ const Home = () => {
   const [selectedAssetList, setSelectedAssetList] = useState<IAssetInfo[]>([]);
 
   const [open, setOpen] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState<
-    OrderWithCounter | undefined
-  >();
 
   useEffect(() => {
     dispatch(connectWallet());
@@ -64,44 +54,6 @@ const Home = () => {
 
     setSelectedAssetList(_selectedAssetList);
   }, [selectedAssets, collections]);
-
-  const onCreateOrder = async () => {
-    if (!provider) {
-      toast.error("Please connect wallet");
-      return;
-    }
-
-    for (let assetAddress in selectedAssets) {
-      const temp = assetAddress.split("_");
-      const collection = collections.find(
-        (c) => c.collectionInfo.address.toLowerCase() === temp[0].toLowerCase()
-      );
-    }
-
-    // try {
-    //   dispatch(setLoading(true));
-    //   toast.info("Checking approved ...");
-    //   await approveToken(
-    //     provider,
-    //     data.tokenAddress,
-    //     data.tokenId.toString(),
-    //     ItemType.ERC721
-    //   );
-    //   toast.info("Creating order ...");
-    //   const order = await createOrderFor721(
-    //     provider,
-    //     data.tokenAddress,
-    //     data.tokenId.toString(),
-    //     data.price.toString()
-    //   );
-    //   toast.info("Created order");
-    //   await apiPostOrder(order);
-    //   dispatch(getAllOrders());
-    //   dispatch(setLoading(false));
-    // } catch (e) {
-    //   dispatch(setLoading(false));
-    // }
-  };
 
   const onRefresh = () => {
     try {

@@ -1,15 +1,15 @@
 import Button from "@mui/material/Button";
-import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import { Box, Stack, TextField, Typography } from "@mui/material";
-import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
-import { approveToken, fulfillOrder } from "libs/orders";
+import { approveToken, createOrder } from "libs/seaport";
 import { AppDispatch, RootState } from "slices/store";
 import { useSelector, useDispatch } from "react-redux";
-import { apiDeleteOrder } from "utils/api";
+import { apiPostOrder } from "utils/api";
 import { setLoading } from "slices/viewState";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { getAllOrders } from "slices/orders";
+import { toast } from "react-toastify";
 
 export interface ICreateOrderDialogProps {
   open: boolean;
@@ -28,11 +28,32 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
   };
 
   const onSubmit = async () => {
-    for (let i = 0; i < selectedAssets.length; i++) {
-      const collectionInfo = selectedAssets[i].collectionInfo as ICollectionInfo;
-      const asset = selectedAssets[i].asset as IAsset;
+    try {
+      dispatch(setLoading(true));
+      toast.info("Checking approved ...");
+      for (let i = 0; i < selectedAssets.length; i++) {
+        const collectionInfo = selectedAssets[i]
+          .collectionInfo as ICollectionInfo;
+        const asset = selectedAssets[i].asset as IAsset;
 
-      await approveToken(provider, collectionInfo.address, asset.tokenId, collectionInfo.collectionType ? ItemType.ERC1155 : ItemType.ERC721);
+        await approveToken(
+          provider,
+          collectionInfo.address,
+          asset.tokenId,
+          collectionInfo.collectionType ? ItemType.ERC1155 : ItemType.ERC721
+        );
+      }
+
+      toast.info("Creating order ...");
+      const order = await createOrder(provider, selectedAssets, Number(price));
+
+      toast.info("Created order");
+      await apiPostOrder(order);
+      dispatch(getAllOrders());
+      dispatch(setLoading(false));
+    } catch (ex) {
+      console.error(ex);
+      dispatch(setLoading(false));
     }
   };
 
@@ -47,7 +68,7 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
             </li>
           ))}
         </ul>
-        <Stack sx={{margin: "10px 0 0 0"}} spacing={1}>
+        <Stack sx={{ margin: "10px 0 0 0" }} spacing={1}>
           <TextField
             label="Price"
             variant="outlined"

@@ -1,6 +1,4 @@
-const fs = require("fs");
 const { Order } = require("../models");
-const resolvePath = require("path").resolve;
 
 async function create(req, res) {
   try {
