@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { useState } from "react";
 import OrderDetailDialog from "./OrderDetailDialog";
 

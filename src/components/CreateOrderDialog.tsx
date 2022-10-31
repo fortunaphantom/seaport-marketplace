@@ -10,6 +10,7 @@ import { useState } from "react";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { getAllOrders } from "slices/orders";
 import { toast } from "react-toastify";
+import Web3 from "web3";
 
 export interface ICreateOrderDialogProps {
   open: boolean;
@@ -29,6 +30,13 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
 
   const onSubmit = async () => {
     try {
+      const web3 = new Web3(provider);
+      const chainId = await web3.eth.getChainId();
+      if (chainId !== 5) {
+        toast.error("You should select Goerli chain");
+        return;
+      }
+
       dispatch(setLoading(true));
       toast.info("Checking approved ...");
       for (let i = 0; i < selectedAssets.length; i++) {
@@ -36,21 +44,29 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
           .collectionInfo as ICollectionInfo;
         const asset = selectedAssets[i].asset as IAsset;
 
-        await approveToken(
+        const res = await approveToken(
           provider,
           collectionInfo.address,
           asset.tokenId,
           collectionInfo.collectionType ? ItemType.ERC1155 : ItemType.ERC721
         );
+
+        if (!res) {
+          toast.error("You did not approve the token");
+          dispatch(setLoading(false));
+          return;
+        }
       }
 
       toast.info("Creating order ...");
       const order = await createOrder(provider, selectedAssets, Number(price));
+      console.log(JSON.stringify(order));
 
       toast.info("Created order");
       await apiPostOrder(order);
       dispatch(getAllOrders());
       dispatch(setLoading(false));
+      handleClose();
     } catch (ex) {
       console.error(ex);
       dispatch(setLoading(false));

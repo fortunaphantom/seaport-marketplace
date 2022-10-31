@@ -25,7 +25,7 @@ const CollectionAccordion = (props: ICollectionAccordionProps) => {
       <AccordionDetails>
         <Grid container spacing={2}>
           {collection.assets.map((asset) => (
-            <Grid item xs={3}>
+            <Grid item xs={3} key={asset.tokenId}>
               <AssetCard
                 asset={asset}
                 collectionInfo={collection.collectionInfo}

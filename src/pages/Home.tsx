@@ -93,7 +93,7 @@ const Home = () => {
           </Stack>
           <div>
             {collections.map((collection) => (
-              <CollectionAccordion collection={collection} />
+              <CollectionAccordion collection={collection} key={collection.collectionInfo.address} />
             ))}
           </div>
         </Grid>

@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 export async function apiPostOrder(order: OrderWithCounter) {
-  const { data } = await api.post("/orders", { order });
+  const { data } = await api.post("/orders", order);
   return data;
 }
 

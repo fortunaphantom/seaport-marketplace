@@ -34,7 +34,9 @@ function OrderDetailDialog(props: IOrderDetailDialogProps) {
         await apiDeleteOrder(selectedOrder.signature);
         await dispatch(getAllOrders());
         dispatch(setLoading(false));
+        handleClose();
       } catch (e) {
+        console.error(e);
         dispatch(setLoading(false));
       }
     }
