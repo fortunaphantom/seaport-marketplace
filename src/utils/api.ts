@@ -6,18 +6,23 @@ const api = axios.create({
 });
 
 export async function apiPostOrder(order: OrderWithCounter) {
-  const { data } = await api.post("/", { order });
+  const { data } = await api.post("/orders", { order });
   return data;
 }
 
 export async function apiGetAllOrders() {
-  const { data } = await api.get("/");
+  const { data } = await api.get("/orders");
   return data as OrderWithCounter[];
 }
 
 export async function apiDeleteOrder(signature: string) {
-  const { data } = await api.delete(`/${signature}`);
+  const { data } = await api.delete(`/orders/${signature}`);
   return data;
+}
+
+export async function apiGetAllCollections() {
+  const { data } = await api.get("/collections");
+  return data as ICollection[];
 }
 
 export default api;

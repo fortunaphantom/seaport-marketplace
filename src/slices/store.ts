@@ -3,6 +3,7 @@ import web3Reducer from "./web3Slice";
 import { getDefaultMiddleware } from "@reduxjs/toolkit";
 import viewState from "./viewState";
 import orders from "./orders";
+import collections from "./collections";
 
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
@@ -13,6 +14,7 @@ export const store = configureStore({
     web3: web3Reducer,
     viewState: viewState,
     orders: orders,
+    collections,
   },
   middleware: customizedMiddleware,
 });

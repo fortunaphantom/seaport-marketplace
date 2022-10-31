@@ -1,10 +1,14 @@
+const { OrderController, CollectionController } = require("../controllers");
+
 const Router = require("express").Router;
-const Controllers = require("../controllers");
 
 const router = new Router();
 
-router.post("/", Controllers.Main.create);
-router.get("/", Controllers.Main.getAll);
-router.delete("/:signature", Controllers.Main.deleteOrder);
+router.post("/orders", OrderController.create);
+router.get("/orders", OrderController.getAll);
+router.delete("/orders/:signature", OrderController.deleteOrder);
+
+router.get("/collections", CollectionController.getAll);
+router.post("/collections", CollectionController.create);
 
 module.exports = router;

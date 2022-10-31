@@ -1,4 +1,4 @@
-import { Order, OrderWithCounter } from "@opensea/seaport-js/lib/types";
+import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { apiGetAllOrders } from "utils/api";
 

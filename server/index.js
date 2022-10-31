@@ -1,6 +1,9 @@
 const config = require("./config");
 const express = require("./services/express");
 const routes = require("./routes");
+const { connectMongo } = require("./services/mongoose");
+
+connectMongo("mongodb://localhost:27017/rinzo_market");
 
 const port = process.env.PORT || 4000;
 const app = express(routes);

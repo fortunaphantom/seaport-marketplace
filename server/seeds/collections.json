@@ -1,0 +1,74 @@
+[
+  {
+    "collectionInfo": {
+      "name": "Rinzo721",
+      "symbol": "Rinzo721",
+      "address": "0x415bdda9c15968edd99022ccf4c8aba821df2970",
+      "collectionType": 0,
+      "chainId": 5,
+      "image": null
+    },
+    "assets": [
+      {
+        "tokenId": "1",
+        "image": "https://i.seadn.io/gae/xN3swL04Q8vT6RtMtu9XQjo1TLwofCxq5AfY0MVti8_sBcsB_D594Lf3d300OiuxGmnjIT_r6nP13vlDGvjQT9PBOT1BuFTrtVBEmA?auto=format&w=1000",
+        "metadata": null,
+        "name": "Elegant Ocean Racers #1"
+      },
+      {
+        "tokenId": "2",
+        "image": "https://i.seadn.io/gae/1XOdGBoNuiaheajJDFEMuroS0JW94D3vecOsnd0EVCnpHi3Sbl9ZyMFzXNP_7Hp2CZ_lTLi19fvsYmf_Te94J0ITBVE1lkkxMuMevsQ?auto=format&w=1000",
+        "metadata": null,
+        "name": "Elegant Ocean Racers #2"
+      },
+      {
+        "tokenId": "3",
+        "image": "https://i.seadn.io/gae/KimSEZ6bm24EMKW5wprC90LGR-4nZPWputNCjHTzpOwQFnpECfbIFkVPamytc8iNIl7UDoAgcv7eyacKBEn0XB9rcI5lF7fuKCTbjg?auto=format&w=1000",
+        "metadata": null,
+        "name": "Elegant Ocean Racers #3"
+      },
+      {
+        "tokenId": "4",
+        "image": "https://i.seadn.io/gae/cJ6EqLzeBafpuEgD7cHmMgSvEBOGZS0Fl4X-Wqg9QFr628ykyp1Qyc5qNoLqjTUJDQTlmcZxu8x4hToJ87-HKswPb2GVWQm-Ef12?auto=format&w=1000",
+        "metadata": null,
+        "name": "Elegant Ocean Racers #4"
+      },
+      {
+        "tokenId": "5",
+        "image": "https://i.seadn.io/gae/NksSwsH5O7JSDDrl22D0dC86xVSglfQY_YPz1KeqZfsbs_1MTBlCbrZ6mtIlhMmeX2QJoydCEoCVs2XYI2QoygtNxhUsvfHL3E1qkQ?auto=format&w=1000",
+        "metadata": null,
+        "name": "Elegant Ocean Racers #5"
+      }
+    ]
+  },
+  {
+    "collectionInfo": {
+      "name": "Rinzo1155",
+      "symbol": "Rinzo1155",
+      "address": "0x7742137aae874febcf098e42a68404dd1e3c7d15",
+      "collectionType": 1,
+      "chainId": 5,
+      "image": null
+    },
+    "assets": [
+      {
+        "tokenId": "1",
+        "image": "https://i.seadn.io/gae/46OUfGNI7iVAY-cdwoHeKHqdUj-FEmsOLxrqQx4vT20LjQ5sXZrmdJT7bCEdFb48v4949FvEcqoNlWT3pBRfjXn702vpYjVN2appfhk?auto=format&w=1000",
+        "metadata": null,
+        "name": "5KM Sneaker #10001"
+      },
+      {
+        "tokenId": "2",
+        "image": "https://i.seadn.io/gae/SbZk0YPUbtoIdbKXVyCU6TqGxbivxp0W4mLXc1gaLFWayjDk_kx6KYeXGa5LLfWgFXJ5JSKMYX8glrpTyNV2XmkfwuhaheMT0SmJ?auto=format&w=1000",
+        "metadata": null,
+        "name": "5KM Sneaker #10002"
+      },
+      {
+        "tokenId": "3",
+        "image": "https://i.seadn.io/gae/tYAcyO0Y0fRQCOfFRWnxxEC3gn2qIklqhImVvFpQU8fe9q-O0wFuPRGRzs1sDZzc_RnPZ7VCFMMbhq2hkgjNfxte2j8VdkaM1fUI?auto=format&w=1000",
+        "metadata": null,
+        "name": "5KM Sneaker #10003"
+      }
+    ]
+  }
+]
