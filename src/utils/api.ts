@@ -2,7 +2,10 @@ import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:4000/api",
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? "http://45.86.230.45/api"
+      : "http://localhost:4000/api",
 });
 
 export async function apiPostOrder(order: OrderWithCounter) {
