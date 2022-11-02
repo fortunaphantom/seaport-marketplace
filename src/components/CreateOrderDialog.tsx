@@ -33,7 +33,7 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
     const newPrices = [...prices];
     newPrices[index] = value;
     setPrices(newPrices);
-  }
+  };
 
   const onSubmit = async () => {
     try {
@@ -60,41 +60,49 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
         );
 
         if (!res) {
-          toast.error(`You did not approve the token [${assetCaption}]`);
+          toast.error(
+            `You are not the owner or failed in approving [${assetCaption}]`
+          );
           continue;
         }
 
-        // Creating Rinzo order
-        toast.info(`Creating Rinzo order [${assetCaption}]`);
-        const order1 = await createOrder(
-          provider,
-          [selectedAssets[i]],
-          Number(prices[i])
-        );
-        await apiPostOrder(order1);
-        console.log("Rinzo", assetCaption, JSON.stringify(order1));
+        try {
+          // Creating Rinzo order
+          toast.info(`Creating Rinzo order [${assetCaption}]`);
+          const order1 = await createOrder(
+            provider,
+            [selectedAssets[i]],
+            Number(prices[i])
+          );
+          await apiPostOrder(order1);
+          console.log("Rinzo", assetCaption, JSON.stringify(order1));
+        } catch (ex) {
+          toast.error(`Failed in creating Rinzo order [${assetCaption}]`);
+        }
 
-        // Creating Opensea order
-        toast.info(`Creating Opensea order [${assetCaption}]`);
-        const order2 = await createOpenseaOrder(
-          provider,
-          [selectedAssets[i]],
-          Number(prices[i])
-        );
-        await apiPostOrder(order2);
-        console.log("Opensea", assetCaption, JSON.stringify(order2));
-        console.log(JSON.stringify(order2));
+        try {
+          // Creating Opensea order
+          toast.info(`Creating Opensea order [${assetCaption}]`);
+          const order2 = await createOpenseaOrder(
+            provider,
+            [selectedAssets[i]],
+            Number(prices[i])
+          );
+          await apiPostOrder(order2);
+          console.log("Opensea", assetCaption, JSON.stringify(order2));
+          console.log(JSON.stringify(order2));
 
-        // Listing order to opensea
-        toast.info(`Listing Opensea order [${assetCaption}]`);
-        await listOpenseaOrder(order2);
-
+          // Listing order to opensea
+          toast.info(`Listing Opensea order [${assetCaption}]`);
+          await listOpenseaOrder(order2);
+        } catch (ex) {
+          toast.error(`Failed in creating Opensea order [${assetCaption}]`);
+        }
       }
 
       dispatch(getAllOrders());
       dispatch(setLoading(false));
-      
-      toast.info("Created order");
+
       dispatch(getAllOrders());
       dispatch(setLoading(false));
       handleClose();
@@ -104,7 +112,8 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
     }
   };
 
-  const getAssetCaption = (asset: IAssetInfo) => (asset.collectionInfo.address + "_" + asset.asset.tokenId)
+  const getAssetCaption = (asset: IAssetInfo) =>
+    asset.collectionInfo.name + " #" + asset.asset.tokenId;
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -122,7 +131,7 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
                 borderBottom: "1px solid #ccc",
               }}
             >
-              <Typography sx={{margin: "0 0 6px 0"}}>
+              <Typography sx={{ margin: "0 0 6px 0" }}>
                 {getAssetCaption(asset)}
               </Typography>
               <TextField

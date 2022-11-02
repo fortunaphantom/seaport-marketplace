@@ -32,7 +32,7 @@ function App() {
         <MyAppBar />
         <Home />
         <ToastContainer
-          position="top-right"
+          position="bottom-left"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
