@@ -7,8 +7,7 @@ import {
 import { ethers } from "ethers";
 import config from "utils/config";
 import Web3 from "web3";
-import ERC721ABI from "./erc721_abi.json";
-import ERC1155ABI from "./erc1155_abi.json";
+import axios from "axios";
 
 export async function createOpenseaOrder(
   provider: any,
@@ -65,4 +64,8 @@ export async function createOpenseaOrder(
 
   const order = await executeAllActions();
   return order;
+}
+
+export async function listOpenseaOrder(order: OrderWithCounter) {
+  await axios.post(config.SeaportEndpoint + "/listings", order);
 }
