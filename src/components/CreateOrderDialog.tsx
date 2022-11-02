@@ -23,11 +23,17 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
   const { onClose, selectedAssets, open } = props;
   const provider = useSelector<RootState, any>((state) => state.web3.provider);
   const dispatch = useDispatch<AppDispatch>();
-  const [price, setPrice] = useState<string>("");
+  const [prices, setPrices] = useState<string[]>([]);
 
   const handleClose = () => {
     onClose();
   };
+
+  const onPrice = (index: number, value: string) => {
+    const newPrices = [...prices];
+    newPrices[index] = value;
+    setPrices(newPrices);
+  }
 
   const onSubmit = async () => {
     try {
@@ -39,12 +45,13 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
       }
 
       dispatch(setLoading(true));
-      toast.info("Checking approved ...");
       for (let i = 0; i < selectedAssets.length; i++) {
         const collectionInfo = selectedAssets[i]
           .collectionInfo as ICollectionInfo;
         const asset = selectedAssets[i].asset as IAsset;
+        const assetCaption = getAssetCaption(selectedAssets[i]);
 
+        toast.info(`Approving [${assetCaption}] ...`);
         const res = await approveToken(
           provider,
           collectionInfo.address,
@@ -53,18 +60,39 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
         );
 
         if (!res) {
-          toast.error("You did not approve the token");
-          dispatch(setLoading(false));
-          return;
+          toast.error(`You did not approve the token [${assetCaption}]`);
+          continue;
         }
+
+        // Creating Rinzo order
+        toast.info(`Creating Rinzo order [${assetCaption}]`);
+        const order1 = await createOrder(
+          provider,
+          [selectedAssets[i]],
+          Number(prices[i])
+        );
+        await apiPostOrder(order1);
+        console.log("Rinzo", assetCaption, JSON.stringify(order1));
+
+        // Creating Opensea order
+        toast.info(`Creating Opensea order [${assetCaption}]`);
+        const order2 = await createOpenseaOrder(
+          provider,
+          [selectedAssets[i]],
+          Number(prices[i])
+        );
+        await apiPostOrder(order2);
+        console.log("Opensea", assetCaption, JSON.stringify(order2));
+        console.log(JSON.stringify(order2));
+
+        // Listing order to opensea
+
       }
 
-      toast.info("Creating order ...");
-      const order = await createOpenseaOrder(provider, selectedAssets, Number(price));
-      console.log(JSON.stringify(order));
-
+      dispatch(getAllOrders());
+      dispatch(setLoading(false));
+      
       toast.info("Created order");
-      await apiPostOrder(order);
       dispatch(getAllOrders());
       dispatch(setLoading(false));
       handleClose();
@@ -74,26 +102,39 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
     }
   };
 
+  const getAssetCaption = (asset: IAssetInfo) => (asset.collectionInfo.address + "_" + asset.asset.tokenId)
+
   return (
     <Dialog onClose={handleClose} open={open}>
-      <Box padding={2}>
-        <Typography variant="h5">Assets</Typography>
+      <Box padding={3}>
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          Assets for sale
+        </Typography>
         <ul style={{ listStyle: "none", padding: "0", margin: "6px 0 10px 0" }}>
-          {selectedAssets.map((asset) => (
-            <li key={asset.collectionInfo.address + "_" + asset.asset.tokenId}>
-              {asset.collectionInfo.name} - {asset.asset.name}
+          {selectedAssets.map((asset, index) => (
+            <li
+              key={getAssetCaption(asset)}
+              style={{
+                margin: "0 0 8px 0",
+                padding: "0 0 12px 0",
+                borderBottom: "1px solid #ccc",
+              }}
+            >
+              <Typography sx={{margin: "0 0 6px 0"}}>
+                {getAssetCaption(asset)}
+              </Typography>
+              <TextField
+                label="Price in ETH"
+                variant="outlined"
+                fullWidth
+                value={prices[index] || ""}
+                onChange={(e) => onPrice(index, e.target.value)}
+                size="small"
+              />
             </li>
           ))}
         </ul>
         <Stack sx={{ margin: "10px 0 0 0" }} spacing={1}>
-          <TextField
-            label="Price"
-            variant="outlined"
-            fullWidth
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            size="small"
-          />
           <Button variant="contained" onClick={onSubmit}>
             Create Order
           </Button>
