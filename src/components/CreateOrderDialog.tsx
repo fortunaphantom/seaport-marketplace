@@ -11,7 +11,7 @@ import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { getAllOrders } from "slices/orders";
 import { toast } from "react-toastify";
 import Web3 from "web3";
-import { createOpenseaOrder } from "libs/opensea";
+import { createOpenseaOrder, listOpenseaOrder } from "libs/opensea";
 
 export interface ICreateOrderDialogProps {
   open: boolean;
@@ -86,6 +86,8 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
         console.log(JSON.stringify(order2));
 
         // Listing order to opensea
+        toast.info(`Listing Opensea order [${assetCaption}]`);
+        await listOpenseaOrder(order2);
 
       }
 
