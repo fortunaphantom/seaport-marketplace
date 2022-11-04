@@ -72,12 +72,23 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
           const order1 = await createOrder(
             provider,
             [selectedAssets[i]],
-            Number(prices[i])
+            Number(prices[i]),
+            [
+              {
+                recipient: "0x0000a26b00c1F0DF003000390027140000fAa719",
+                basisPoints: 0.001
+              },
+              {
+                recipient: "0x73c6635d2d919faf85e947560dc20411448eddc7",
+                basisPoints: 0.001
+              }
+            ]
           );
           await apiPostOrder(order1);
           console.log("Rinzo", assetCaption, JSON.stringify(order1));
         } catch (ex) {
           toast.error(`Failed in creating Rinzo order [${assetCaption}]`);
+          console.log(ex);
         }
 
         try {
@@ -97,6 +108,7 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
           await listOpenseaOrder(order2);
         } catch (ex) {
           toast.error(`Failed in creating Opensea order [${assetCaption}]`);
+          console.log(ex);
         }
       }
 

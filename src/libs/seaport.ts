@@ -1,10 +1,12 @@
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import {
+  ConsiderationInputItem,
   CreateInputItem,
+  Fee,
   OrderWithCounter,
 } from "@opensea/seaport-js/lib/types";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import config from "utils/config";
 import Web3 from "web3";
 import ERC721ABI from "./erc721_abi.json";
@@ -142,7 +144,8 @@ export async function createOrderFor1155(
 export async function createOrder(
   provider: any,
   selectedAssets: IAssetInfo[],
-  priceInEth: number
+  priceInEth: number,
+  fees: Fee[] | undefined = undefined
 ) {
   const seaport = new Seaport(new ethers.providers.Web3Provider(provider));
   const web3 = new Web3(provider);
@@ -166,15 +169,33 @@ export async function createOrder(
     }
   }
 
+  // set fees
+  const totalAmount = ethers.utils.parseEther(priceInEth.toString());
+  let restAmount = totalAmount;
+  const consideration: ConsiderationInputItem[] = fees?.map(fee => {
+    const amount = totalAmount.mul(BigNumber.from(fee.basisPoints * 10000)).div(100000000);
+    restAmount = restAmount.sub(amount);
+    return {
+      amount: amount.toString(),
+      recipient: fee.recipient
+    };
+  }) || [];
+
+  const startTime = Math.round((new Date()).getTime() / 1000);
+  const endTime = startTime + 86400 * 30;
+
   const { executeAllActions } = await seaport.createOrder(
     {
       offer: offerItems,
       consideration: [
         {
-          amount: ethers.utils.parseEther(priceInEth.toString()).toString(),
+          amount: restAmount.toString(),
           recipient: account,
         },
+        ...consideration
       ],
+      startTime: startTime.toString(),
+      endTime: endTime.toString()
     },
     account
   );
