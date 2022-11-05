@@ -12,9 +12,11 @@ import { setLoading } from "slices/viewState";
 import CollectionAccordion from "components/CollectionAccordion";
 import { getAllCollections } from "slices/collections";
 import CreateOrderDialog from "components/CreateOrderDialog";
+import { fulfillOrders } from "libs/seaport";
 
 const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const provider = useSelector<RootState, any>((state) => state.web3.provider);
   const orderList = useSelector<RootState, OrderWithCounter[]>(
     (state) => state.orders.orders
   );
@@ -70,6 +72,10 @@ const Home = () => {
     setOpen(false);
   };
 
+  const onFulFillAll = async () => {
+    await fulfillOrders(provider, orderList);
+  }
+
   return (
     <Box padding={3}>
       <Grid container spacing={6}>
@@ -110,6 +116,9 @@ const Home = () => {
           </Stack>
           <div>
             <OrderList orderList={orderList} />
+            <Box sx={{textAlign: "center"}} margin={2}>
+              <Button variant="contained" onClick={onFulFillAll} disabled={!orderList.length}>Fulfill All</Button>
+            </Box>
           </div>
         </Grid>
       </Grid>

@@ -14,11 +14,6 @@ const theme = createTheme({
   typography: {
     fontFamily: ["Roboto", "Urbanist"].join(","),
   },
-  palette: {
-    background: {
-      default: "#e4f0e2",
-    },
-  },
 });
 
 function App() {

@@ -20,7 +20,7 @@ const CollectionAccordion = (props: ICollectionAccordionProps) => {
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
       >
-        <Typography variant="h5">{collection.collectionInfo.name}</Typography>
+        <Typography variant="h5" sx={{fontSize: "20px"}}>{collection.collectionInfo.name}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={2}>

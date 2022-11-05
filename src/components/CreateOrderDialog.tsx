@@ -91,25 +91,25 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
           console.log(ex);
         }
 
-        try {
-          // Creating Opensea order
-          toast.info(`Creating Opensea order [${assetCaption}]`);
-          const order2 = await createOpenseaOrder(
-            provider,
-            [selectedAssets[i]],
-            Number(prices[i])
-          );
-          await apiPostOrder(order2);
-          console.log("Opensea", assetCaption, JSON.stringify(order2));
-          console.log(JSON.stringify(order2));
+        // try {
+        //   // Creating Opensea order
+        //   toast.info(`Creating Opensea order [${assetCaption}]`);
+        //   const order2 = await createOpenseaOrder(
+        //     provider,
+        //     [selectedAssets[i]],
+        //     Number(prices[i])
+        //   );
+        //   await apiPostOrder(order2);
+        //   console.log("Opensea", assetCaption, JSON.stringify(order2));
+        //   console.log(JSON.stringify(order2));
 
-          // Listing order to opensea
-          toast.info(`Listing Opensea order [${assetCaption}]`);
-          await listOpenseaOrder(order2);
-        } catch (ex) {
-          toast.error(`Failed in creating Opensea order [${assetCaption}]`);
-          console.log(ex);
-        }
+        //   // Listing order to opensea
+        //   toast.info(`Listing Opensea order [${assetCaption}]`);
+        //   await listOpenseaOrder(order2);
+        // } catch (ex) {
+        //   toast.error(`Failed in creating Opensea order [${assetCaption}]`);
+        //   console.log(ex);
+        // }
       }
 
       dispatch(getAllOrders());
