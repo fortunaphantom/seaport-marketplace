@@ -236,3 +236,59 @@ export async function fulfillOrders(provider: any, orders: OrderWithCounter[]) {
   const transaction = executeAllFulfillActions();
   return transaction;
 }
+
+
+export async function createExampleOrder(
+  provider: any,
+) {
+  const seaport = new Seaport(new ethers.providers.Web3Provider(provider));
+  const web3 = new Web3(provider);
+  const account = (await web3.eth.getAccounts())?.[0]?.toLowerCase();
+
+  const startTime = Math.round(new Date().getTime() / 1000);
+  const endTime = startTime + 86400 * 30;
+
+  const { executeAllActions } = await seaport.createOrder(
+    {
+      offer: [
+        {
+          itemType: ItemType.ERC1155,
+          token: "0x7742137aae874febcf098e42a68404dd1e3c7d15",
+          identifier: "2",
+          amount: "3",
+        },
+        {
+          itemType: ItemType.ERC721,
+          token: "0x415bdda9c15968edd99022ccf4c8aba821df2970",
+          identifier: "5",
+        }
+      ],
+      consideration: [
+        {
+          amount: ethers.utils.parseEther("0.0001").toString(),
+          recipient: account,
+
+        },
+        {
+          itemType: ItemType.ERC721,
+          token: "0x415bdda9c15968edd99022ccf4c8aba821df2970",
+          identifier: "6",
+          recipient: account,
+        },
+        {
+          itemType: ItemType.ERC721,
+          token: "0x415bdda9c15968edd99022ccf4c8aba821df2970",
+          identifier: "4",
+          recipient: account,
+
+        },
+      ],
+      startTime: startTime.toString(),
+      endTime: endTime.toString(),
+    },
+    account
+  );
+
+  const order = await executeAllActions();
+  return order;
+}

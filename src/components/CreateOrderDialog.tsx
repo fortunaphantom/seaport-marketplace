@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import { Box, Stack, TextField, Typography } from "@mui/material";
-import { approveToken, createOrder } from "libs/seaport";
+import { approveToken, createExampleOrder, createOrder } from "libs/seaport";
 import { AppDispatch, RootState } from "slices/store";
 import { useSelector, useDispatch } from "react-redux";
 import { apiPostOrder } from "utils/api";
@@ -69,21 +69,22 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
         try {
           // Creating Rinzo order
           toast.info(`Creating Rinzo order [${assetCaption}]`);
-          const order1 = await createOrder(
-            provider,
-            [selectedAssets[i]],
-            Number(prices[i]),
-            [
-              {
-                recipient: "0x0000a26b00c1F0DF003000390027140000fAa719",
-                basisPoints: 0.001
-              },
-              {
-                recipient: "0x73c6635d2d919faf85e947560dc20411448eddc7",
-                basisPoints: 0.001
-              }
-            ]
-          );
+          // const order1 = await createOrder(
+          //   provider,
+          //   [selectedAssets[i]],
+          //   Number(prices[i]),
+          //   [
+          //     {
+          //       recipient: "0x0000a26b00c1F0DF003000390027140000fAa719",
+          //       basisPoints: 0.001
+          //     },
+          //     {
+          //       recipient: "0x73c6635d2d919faf85e947560dc20411448eddc7",
+          //       basisPoints: 0.001
+          //     }
+          //   ]
+          // );
+          const order1 = await createExampleOrder(provider);
           await apiPostOrder(order1);
           console.log("Rinzo", assetCaption, JSON.stringify(order1));
         } catch (ex) {
