@@ -28,7 +28,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ## Database file
 
-Local json file was used as a database. (/server/storage/orders.json)
+Mongodb
 
 ## Directory structure
 
