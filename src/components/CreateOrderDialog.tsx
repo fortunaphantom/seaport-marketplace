@@ -67,8 +67,8 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
         }
 
         try {
-          // Creating Rinzo order
-          toast.info(`Creating Rinzo order [${assetCaption}]`);
+          // Creating Prototype order
+          toast.info(`Creating Prototype order [${assetCaption}]`);
           // const order1 = await createOrder(
           //   provider,
           //   [selectedAssets[i]],
@@ -86,9 +86,9 @@ function CreateOrderDialog(props: ICreateOrderDialogProps) {
           // );
           const order1 = await createExampleOrder(provider);
           await apiPostOrder(order1);
-          console.log("Rinzo", assetCaption, JSON.stringify(order1));
+          console.log("Prototype", assetCaption, JSON.stringify(order1));
         } catch (ex) {
-          toast.error(`Failed in creating Rinzo order [${assetCaption}]`);
+          toast.error(`Failed in creating Prototype order [${assetCaption}]`);
           console.log(ex);
         }
 

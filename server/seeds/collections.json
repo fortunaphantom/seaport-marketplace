@@ -1,8 +1,8 @@
 [
   {
     "collectionInfo": {
-      "name": "Rinzo721",
-      "symbol": "Rinzo721",
+      "name": "Prototype721",
+      "symbol": "Prototype721",
       "address": "0x415bdda9c15968edd99022ccf4c8aba821df2970",
       "collectionType": 0,
       "chainId": 5,
@@ -43,8 +43,8 @@
   },
   {
     "collectionInfo": {
-      "name": "Rinzo1155",
-      "symbol": "Rinzo1155",
+      "name": "Prototype1155",
+      "symbol": "Prototype1155",
       "address": "0x7742137aae874febcf098e42a68404dd1e3c7d15",
       "collectionType": 1,
       "chainId": 5,

@@ -38,7 +38,7 @@ export default function MyAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Rinzo Seaport Testing
+            Prototype Seaport Testing
           </Typography>
           <Button color="success" variant="contained" onClick={onConnect}>
             {selectedAddress

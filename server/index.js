@@ -3,7 +3,7 @@ const express = require("./services/express");
 const routes = require("./routes");
 const { connectMongo } = require("./services/mongoose");
 
-connectMongo("mongodb://127.0.0.1:27017/rinzo_market");
+connectMongo("mongodb://127.0.0.1:27017/Prototype_market");
 
 const port = process.env.PORT || 4000;
 const app = express(routes);
